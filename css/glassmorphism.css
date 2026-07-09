@@ -1,0 +1,139 @@
+/* ============ Glassmorphism Core ============ */
+.glass-card {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius, 16px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+    border-color: rgba(139, 92, 246, 0.2);
+    box-shadow: 0 12px 48px rgba(139, 92, 246, 0.08);
+}
+
+.glass-card.glow-purple {
+    box-shadow: 0 8px 32px rgba(139, 92, 246, 0.1), 0 0 60px rgba(139, 92, 246, 0.02);
+}
+
+.glass-card.glow-cyan {
+    box-shadow: 0 8px 32px rgba(34, 211, 238, 0.1), 0 0 60px rgba(34, 211, 238, 0.02);
+}
+
+.glass-card.glow-pink {
+    box-shadow: 0 8px 32px rgba(236, 72, 153, 0.1), 0 0 60px rgba(236, 72, 153, 0.02);
+}
+
+/* ============ Glass Sidebar ============ */
+.glass-sidebar {
+    background: rgba(10, 10, 15, 0.92);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ============ Glass Nav ============ */
+.glass-nav {
+    background: rgba(10, 10, 15, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ============ Glass Inputs ============ */
+.glass-input {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+    border-color: var(--purple);
+    background: rgba(139, 92, 246, 0.05);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.05);
+}
+
+/* ============ Glass Buttons ============ */
+.glass-btn {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: all 0.3s ease;
+}
+
+.glass-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.glass-btn.primary-btn {
+    background: linear-gradient(135deg, var(--purple), var(--purple-dark));
+    border: none;
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2);
+}
+
+.glass-btn.primary-btn:hover {
+    box-shadow: 0 8px 30px rgba(139, 92, 246, 0.3);
+    transform: translateY(-2px);
+}
+
+/* ============ Glass Select ============ */
+.glass-select {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-select:focus {
+    border-color: var(--purple);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.05);
+}
+
+/* ============ Glass Modal ============ */
+.modal.glass-card {
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ============ Glass Upload Area ============ */
+.upload-area {
+    background: rgba(255, 255, 255, 0.02);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.upload-area.dragover {
+    background: rgba(139, 92, 246, 0.05);
+    border-color: var(--purple);
+}
+
+/* ============ Glass Status Indicators ============ */
+.status-indicator,
+.latency-badge,
+.conn-status {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ============ Glass Theme Button ============ */
+.theme-btn {
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.theme-btn.active {
+    background: rgba(139, 92, 246, 0.1);
+    border-color: var(--purple);
+}
