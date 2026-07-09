@@ -3,23 +3,24 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trackify Dashboard</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
-    <!-- Font Awesome -->
+    <title>Trackify — Job Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <!-- Styles -->
     <link rel="stylesheet" href="css/styles.css" />
     <link rel="stylesheet" href="css/glassmorphism.css" />
     <link rel="stylesheet" href="css/animations.css" />
 </head>
 <body>
+    <!-- Toast Container -->
+    <div id="toastContainer"></div>
+
     <!-- Navigation -->
     <nav class="glass-nav">
         <div class="nav-container">
             <div class="nav-brand">
                 <i class="fas fa-rocket"></i>
                 <span>Trackify</span>
+                <span class="status-dot" id="statusDot"></span>
             </div>
             <div class="nav-status">
                 <span class="status-indicator" id="connectionStatus">
@@ -28,42 +29,364 @@
                 <span class="latency-badge" id="latencyDisplay">
                     <i class="fas fa-clock"></i> <span id="latencyValue">--</span>ms
                 </span>
+                <button class="glass-btn ghost-btn" id="settingsToggle">
+                    <i class="fas fa-cog"></i>
+                </button>
             </div>
         </div>
     </nav>
 
+    <!-- Sidebar -->
+    <aside class="sidebar glass-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <span>Trackify</span>
+            </div>
+            <button class="sidebar-close" id="sidebarClose">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="conn-status" id="connStatus">
+            <span class="conn-dot" id="connDot"></span>
+            <span id="connLabel">Connecting...</span>
+        </div>
+        <nav class="sidebar-nav">
+            <a class="nav-link active" data-view="dashboard">
+                <i class="fas fa-th-large"></i>
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-link" data-view="jobs">
+                <i class="fas fa-briefcase"></i>
+                <span>Jobs</span>
+                <span class="nav-badge" id="jobsCount">0</span>
+            </a>
+            <a class="nav-link" data-view="settings">
+                <i class="fas fa-sliders-h"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="user-info">
+                <i class="fas fa-user-circle"></i>
+                <span>Trackify User</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Mobile Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <!-- Main Content -->
-    <main class="dashboard-container">
-        <!-- Hero Section -->
-        <section class="hero-section glass-card animate-slide-up">
-            <div class="hero-content">
-                <h1 class="hero-title">
-                    <span class="gradient-text">Welcome to Trackify</span>
-                </h1>
-                <p class="hero-subtitle">Real-time analytics dashboard with glassmorphism design</p>
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <span class="stat-number" id="totalRequests">0</span>
-                        <span class="stat-label">Total Requests</span>
+    <main class="main-content">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <button class="hamburger" id="hamburger">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="top-bar-content">
+                <div>
+                    <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                    <p class="page-subtitle" id="pageSubtitle">Overview of your job applications</p>
+                </div>
+                <div class="top-bar-actions">
+                    <div class="search-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input class="search-input" id="searchInput" placeholder="Search jobs or companies..." />
                     </div>
-                    <div class="stat-item">
-                        <span class="stat-number" id="activeUsers">0</span>
-                        <span class="stat-label">Active Users</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-number" id="responseTime">0ms</span>
-                        <span class="stat-label">Avg Response</span>
-                    </div>
+                    <button class="glass-btn primary-btn" id="newJobBtn">
+                        <i class="fas fa-plus"></i>
+                        <span>New Job</span>
+                    </button>
                 </div>
             </div>
-            <div class="hero-graphic">
-                <div class="floating-shapes">
-                    <div class="shape shape-1"></div>
-                    <div class="shape shape-2"></div>
-                    <div class="shape shape-3"></div>
+        </div>
+
+        <!-- Dashboard View -->
+        <section class="view active" id="view-dashboard">
+            <!-- Stats Grid -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card glass-card shimmer-loading">
+                    <div class="stat-icon"><i class="fas fa-briefcase"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-label">Total Jobs</span>
+                        <span class="stat-value" id="statTotal">--</span>
+                    </div>
+                    <div class="stat-progress"><span id="statTotalBar" style="width:0%"></span></div>
+                </div>
+                <div class="stat-card glass-card shimmer-loading">
+                    <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-label">Interviews</span>
+                        <span class="stat-value" id="statInterview">--</span>
+                    </div>
+                    <div class="stat-progress"><span id="statInterviewBar" style="width:0%"></span></div>
+                </div>
+                <div class="stat-card glass-card shimmer-loading">
+                    <div class="stat-icon"><i class="fas fa-trophy"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-label">Offers</span>
+                        <span class="stat-value" id="statOffer">--</span>
+                    </div>
+                    <div class="stat-progress"><span id="statOfferBar" style="width:0%"></span></div>
+                </div>
+                <div class="stat-card glass-card shimmer-loading">
+                    <div class="stat-icon"><i class="fas fa-percentage"></i></div>
+                    <div class="stat-info">
+                        <span class="stat-label">Avg Fit Score</span>
+                        <span class="stat-value" id="statScore">--</span>
+                    </div>
+                    <div class="stat-progress"><span id="statScoreBar" style="width:0%"></span></div>
+                </div>
+            </div>
+
+            <!-- Dashboard Grid -->
+            <div class="dashboard-grid">
+                <!-- Recent Applications -->
+                <div class="glass-card dashboard-card">
+                    <div class="card-header">
+                        <i class="fas fa-clock card-icon"></i>
+                        <h3>Recent Applications</h3>
+                        <button class="refresh-btn" id="refreshRecent">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-wrap">
+                            <table class="jobs-table" id="recentTable">
+                                <thead>
+                                    <tr>
+                                        <th>Company</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="recentBody"></tbody>
+                            </table>
+                            <div class="empty-state" id="recentEmpty" style="display:none">
+                                <i class="fas fa-inbox"></i>
+                                <p>No applications yet</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pipeline Chart -->
+                <div class="glass-card dashboard-card">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar card-icon"></i>
+                        <h3>Pipeline by Stage</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container" id="chartContainer">
+                            <div class="chart" id="chart"></div>
+                            <div class="chart-loading" id="chartLoading">
+                                <div class="spinner"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommended Jobs -->
+                <div class="glass-card dashboard-card full-width">
+                    <div class="card-header">
+                        <i class="fas fa-star card-icon"></i>
+                        <h3>Recommended Jobs</h3>
+                        <span class="badge badge-ai">AI Matched</span>
+                    </div>
+                    <div class="card-body">
+                        <div id="recommendedList"></div>
+                        <div class="empty-state" id="recommendedEmpty" style="display:none">
+                            <i class="fas fa-search"></i>
+                            <p>No recommendations yet</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Dashboard Grid -->
-        <section class="dashboard
+        <!-- Jobs View -->
+        <section class="view" id="view-jobs">
+            <div class="jobs-header">
+                <h2>All Jobs</h2>
+                <div class="jobs-filters">
+                    <select class="glass-select" id="statusFilter">
+                        <option value="all">All Status</option>
+                        <option value="saved">Saved</option>
+                        <option value="applied">Applied</option>
+                        <option value="interview">Interview</option>
+                        <option value="offer">Offer</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                </div>
+            </div>
+            <div class="glass-card">
+                <div class="table-wrap">
+                    <table class="jobs-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>Role</th>
+                                <th>Score</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="jobsTableBody"></tbody>
+                    </table>
+                    <div class="empty-state" id="jobsEmpty" style="display:none">
+                        <i class="fas fa-folder-open"></i>
+                        <p>No jobs found</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings View -->
+        <section class="view" id="view-settings">
+            <div class="settings-grid">
+                <div class="glass-card settings-card">
+                    <div class="card-header">
+                        <i class="fas fa-plug card-icon"></i>
+                        <h3>API Connection</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="field">
+                            <label>API Base URL</label>
+                            <input class="glass-input" id="apiBase" placeholder="https://your-app.onrender.com" />
+                        </div>
+                        <div class="field">
+                            <label>API Key</label>
+                            <input class="glass-input" id="apiKey" type="password" placeholder="Enter your API key" />
+                        </div>
+                        <button class="glass-btn primary-btn" id="connectBtn">
+                            <i class="fas fa-link"></i> Save & Connect
+                        </button>
+                        <div class="connection-status" id="connectionDetail">
+                            <span class="status-label">Status:</span>
+                            <span class="status-value" id="connectionDetailStatus">Not connected</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card settings-card">
+                    <div class="card-header">
+                        <i class="fas fa-file-pdf card-icon"></i>
+                        <h3>Resume Upload</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="upload-area" id="uploadArea">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <p>Drop your PDF here or click to browse</p>
+                            <input type="file" id="resumeFile" accept=".pdf" style="display:none" />
+                            <button class="glass-btn" id="uploadBtn">
+                                <i class="fas fa-upload"></i> Choose File
+                            </button>
+                        </div>
+                        <div class="resume-status" id="resumeStatus">
+                            <i class="fas fa-info-circle"></i>
+                            <span>No resume uploaded</span>
+                        </div>
+                        <button class="glass-btn primary-btn" id="uploadResumeBtn" style="display:none">
+                            <i class="fas fa-upload"></i> Upload Resume
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-card settings-card">
+                    <div class="card-header">
+                        <i class="fas fa-palette card-icon"></i>
+                        <h3>Theme</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="theme-options">
+                            <button class="theme-btn active" data-theme="purple">
+                                <span class="theme-dot" style="background:#8B5CF6"></span> Purple
+                            </button>
+                            <button class="theme-btn" data-theme="blue">
+                                <span class="theme-dot" style="background:#3B82F6"></span> Blue
+                            </button>
+                            <button class="theme-btn" data-theme="emerald">
+                                <span class="theme-dot" style="background:#10B981"></span> Emerald
+                            </button>
+                            <button class="theme-btn" data-theme="pink">
+                                <span class="theme-dot" style="background:#EC4899"></span> Pink
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- New Job Modal -->
+    <div class="modal-overlay" id="jobModal">
+        <div class="modal glass-card">
+            <div class="modal-header">
+                <h2><i class="fas fa-plus-circle"></i> Add New Job</h2>
+                <button class="modal-close" id="closeJobModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="field">
+                    <label>Job Title <span class="required">*</span></label>
+                    <input class="glass-input" id="f-title" placeholder="e.g. Senior Software Engineer" />
+                </div>
+                <div class="field">
+                    <label>Company <span class="required">*</span></label>
+                    <input class="glass-input" id="f-company" placeholder="e.g. Google" />
+                </div>
+                <div class="field-row">
+                    <div class="field">
+                        <label>Location</label>
+                        <input class="glass-input" id="f-location" placeholder="e.g. Remote" />
+                    </div>
+                    <div class="field">
+                        <label>Salary</label>
+                        <input class="glass-input" id="f-salary" placeholder="e.g. $120k" />
+                    </div>
+                </div>
+                <div class="field">
+                    <label>Job URL <span class="required">*</span></label>
+                    <input class="glass-input" id="f-url" placeholder="https://..." />
+                </div>
+                <div class="field">
+                    <label>Description <span class="required">*</span></label>
+                    <textarea class="glass-input" id="f-description" rows="4" placeholder="Job description..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="glass-btn" id="cancelJobBtn">Cancel</button>
+                <button class="glass-btn primary-btn" id="saveJobBtn">
+                    <i class="fas fa-save"></i> Save Job
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notes Modal -->
+    <div class="modal-overlay" id="notesModal">
+        <div class="modal glass-card" style="max-width:500px">
+            <div class="modal-header">
+                <h2><i class="fas fa-sticky-note"></i> Notes</h2>
+                <button class="modal-close" id="closeNotesModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="notesList"></div>
+                <div class="note-form">
+                    <input class="glass-input" id="noteInput" placeholder="Add a note..." />
+                    <button class="glass-btn primary-btn" id="addNoteBtn">
+                        <i class="fas fa-plus"></i> Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/jobs.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
