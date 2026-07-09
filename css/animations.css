@@ -1,0 +1,358 @@
+/* ============ Core Animations ============ */
+
+/* Fade In */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+.fade-in-delay-1 {
+    animation-delay: 0.1s;
+    opacity: 0;
+}
+
+.fade-in-delay-2 {
+    animation-delay: 0.2s;
+    opacity: 0;
+}
+
+.fade-in-delay-3 {
+    animation-delay: 0.3s;
+    opacity: 0;
+}
+
+/* Slide In */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.slide-in-left {
+    animation: slideInLeft 0.3s ease-out forwards;
+}
+
+/* Slide In Up */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.slide-in-up {
+    animation: slideInUp 0.4s ease-out forwards;
+}
+
+/* Scale In */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.scale-in {
+    animation: scaleIn 0.3s ease-out forwards;
+}
+
+/* ============ Component Animations ============ */
+
+/* Card Hover Lift */
+.hover-lift {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(139, 92, 246, 0.1);
+}
+
+/* Glow Pulse */
+@keyframes glowPulse {
+    0%,
+    100% {
+        box-shadow: 0 0 20px rgba(139, 92, 246, 0.05);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(139, 92, 246, 0.15);
+    }
+}
+
+.glow-pulse {
+    animation: glowPulse 3s ease-in-out infinite;
+}
+
+/* Floating */
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+.float {
+    animation: float 4s ease-in-out infinite;
+}
+
+.float-delay-1 {
+    animation-delay: 0s;
+}
+
+.float-delay-2 {
+    animation-delay: 1s;
+}
+
+.float-delay-3 {
+    animation-delay: 2s;
+}
+
+/* ============ Loading Animations ============ */
+
+/* Skeleton Shimmer */
+@keyframes shimmer {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+.shimmer {
+    background: linear-gradient(90deg,
+            rgba(255, 255, 255, 0.03) 0%,
+            rgba(255, 255, 255, 0.06) 50%,
+            rgba(255, 255, 255, 0.03) 100%);
+    background-size: 200% 100%;
+    animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Loading Spinner */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--purple);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+.spinner-sm {
+    width: 14px;
+    height: 14px;
+    border-width: 2px;
+}
+
+.spinner-lg {
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
+}
+
+/* Pulse Dot */
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+}
+
+.pulse-dot {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ============ Progress Animations ============ */
+
+/* Progress Bar */
+@keyframes progressBar {
+    from {
+        width: 0;
+    }
+    to {
+        width: var(--progress, 100%);
+    }
+}
+
+.progress-animated {
+    animation: progressBar 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ============ Notification Animations ============ */
+
+/* Toast */
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes toastOut {
+    from {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+}
+
+.toast-in {
+    animation: toastIn 0.3s ease-out forwards;
+}
+
+.toast-out {
+    animation: toastOut 0.3s ease-in forwards;
+}
+
+/* ============ Chart Animations ============ */
+
+/* Bar Grow */
+@keyframes barGrow {
+    from {
+        height: 0;
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.bar-grow {
+    animation: barGrow 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* ============ Modal Animations ============ */
+
+/* Modal Slide */
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.modal-slide-in {
+    animation: modalSlideIn 0.3s ease-out forwards;
+}
+
+/* ============ Counter Animation ============ */
+
+/* Number Count */
+@keyframes countUp {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.count-up {
+    animation: countUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ============ Utilities ============ */
+
+/* Stagger Children */
+.stagger-children>* {
+    opacity: 0;
+}
+
+.stagger-children>*:nth-child(1) {
+    animation-delay: 0.05s;
+}
+.stagger-children>*:nth-child(2) {
+    animation-delay: 0.1s;
+}
+.stagger-children>*:nth-child(3) {
+    animation-delay: 0.15s;
+}
+.stagger-children>*:nth-child(4) {
+    animation-delay: 0.2s;
+}
+.stagger-children>*:nth-child(5) {
+    animation-delay: 0.25s;
+}
+.stagger-children>*:nth-child(6) {
+    animation-delay: 0.3s;
+}
+.stagger-children>*:nth-child(7) {
+    animation-delay: 0.35s;
+}
+.stagger-children>*:nth-child(8) {
+    animation-delay: 0.4s;
+}
+
+.stagger-children>* {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Hover Scale */
+.hover-scale {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hover-scale:hover {
+    transform: scale(1.03);
+}
+
+/* Hover Glow */
+.hover-glow {
+    transition: box-shadow 0.3s ease;
+}
+
+.hover-glow:hover {
+    box-shadow: 0 0 40px rgba(139, 92, 246, 0.1);
+}
